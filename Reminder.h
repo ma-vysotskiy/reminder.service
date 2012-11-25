@@ -1,11 +1,19 @@
 #pragma once
 
 #include <Windows.h>
+#include <fstream>
 #include "ServiceBase.h"
+
+using namespace std;
 
 class CReminder : public CServiceBase {
 public:
 	CReminder() : CServiceBase(L"servicename", true, true, true) {
+		logFile.open("d:\\1.txt");
+		m_stopping = false;
+	}
+	~CReminder() {
+		logFile.close();
 	}
 
 	// When implemented in a derived class, executes when a Start command is 
@@ -33,4 +41,10 @@ public:
     // shutting down. Specifies what should occur immediately prior to the 
     // system shutting down.
     virtual void OnShutdown();
+
+	void Worker();
+
+private:
+	fstream logFile;
+	bool m_stopping;
 };
